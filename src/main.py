@@ -1,13 +1,18 @@
-import pandas as pd
+import random
 from telegram import Poll, Bot
 import asyncio
 import aioschedule as schedule
+import json
 import re
 import os
+
 
 # load json file
 with open('questions.json', 'r') as file: # This file has is in .gitignore because of confdentiality
     questions = json.load(file)
+
+with open("current_question.txt", "r") as current_ques_file:
+    question_num = int(current_ques_file.read())
 
 # Initialize the bot with your token
 bot_token = os.getenv("telegram_minsitry_bot")
@@ -15,7 +20,11 @@ bot = Bot(token=bot_token)
 
 channel_id = '@ministryquestions'  # The channel ID where you want to post the polls
 
-async def is_image_link(link):
+async def update_question_num_file():
+    with open("current_question.txt", "w") as current_ques_file:
+        current_ques_file.write(str(question_num+1))
+
+def is_image_link(link):
     # A simple function to check if a link is an image link
     # This is basic validation; consider enhancing it based on your actual image URLs
     return re.match(r'(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png|jpeg)', str(link))
@@ -29,6 +38,8 @@ async def post_quiz(question, choices, correct_choice):
         await bot.send_photo(chat_id=channel_id, photo=choices[0], caption="")
         choices = ['A', 'B', 'C', 'D']  # Default options for the quiz
 
+    print("Posting Quiz")
+    print(question, choices, correct_choice)
     await bot.send_poll(
         chat_id=channel_id,
         question=question,
@@ -40,11 +51,12 @@ async def post_quiz(question, choices, correct_choice):
     )
 
 async def get_ministry_questions():
-    for question_data in questions:
-        question = question_data['Question']
-        choices = [question_data[f'Choice {letter}'] for letter in ['A', 'B', 'C', 'D']]
-        correct_choice_letter = question_data['Ans']
-        await post_quiz(question, choices, correct_choice_letter)
+    question_data = questions[question_num]
+    question = question_data['Question']
+    choices = [question_data[f'Choice {letter}'] for letter in ['A', 'B', 'C', 'D']]
+    correct_choice_letter = question_data['Ans']
+    await post_quiz(question, choices, correct_choice_letter)
+    await update_question_num_file()
 
 async def scheduler():
     # Schedule 'get_ministry_questions' to run every hour from 9 AM to 11 PM
