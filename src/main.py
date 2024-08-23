@@ -210,11 +210,27 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     return ConversationHandler.END
 
+async def count_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    # Retrieve username from the update object
+    username = update.effective_user.username
+    name = update.effective_user.first_name
+    id = update.effective_user.id
+    if id:
+        # Open the file in append mode and write the username
+        with open("usernames.txt", "a") as file:
+            file.write(f"{username}, {name}, {id}, {datetime.now()}" + "\n")
+        file.close()
+
+    # Send a greeting or start message to the user
+    await update.message.reply_text("Welcome to the Quiz Bot! Type /quiz to quiz yourself.\n"
+                                    "Or you can type /answers to get the Textbook answers to different textbooks")
+
 def main() -> None:
     """Run the bot."""
     application = Application.builder().token(bot_token).build()
 
     # Add command handlers
+    application.add_handler(CommandHandler("start", count_user))
     application.add_handler(CommandHandler("start_send", start_sending_quizzes))
     application.add_handler(CommandHandler("quiz", quiz_command))
     application.add_handler(CommandHandler("send_quiz", send_quiz_command))
