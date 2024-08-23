@@ -240,6 +240,7 @@ def main() -> None:
     application.add_handler(CommandHandler("start_send", start_sending_quizzes))
     application.add_handler(CommandHandler("quiz", quiz_command))
     application.add_handler(CommandHandler("send_quiz", send_quiz_command))
+    application.add_handler(CommandHandler("send_quiz_random", send_quiz_random_command))
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("answers", answers_command)],
