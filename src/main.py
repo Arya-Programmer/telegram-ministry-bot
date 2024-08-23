@@ -99,7 +99,8 @@ async def quiz_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def send_quiz_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # This responds directly to the user with a random quiz
-    await post_quiz(update, context, channel_id, random_question=True)
+    if update.effective_user.username == "arya_kurdo":
+        await post_quiz(update, context, channel_id, random_question=True)
 
 async def scheduler(context: ContextTypes.DEFAULT_TYPE):
     ksa_timezone = pytz.timezone('Asia/Riyadh')
