@@ -66,8 +66,6 @@ This project is licensed under the GNU License - see the [GNU LICENSE](https://w
 
 For any queries or further assistance, please contact [aryakurdo@gmail.com](mailto:aryakurdo@gmail.com).
 
-```
-
 ### Explanation of Sections
 
 - **Features**: Describes what the bot does and its key functionalities.
