@@ -60,7 +60,7 @@ Contributions to the bot are welcome. Please fork the repository, make your chan
 
 ## License
 
-This project is licensed under the MIT License - see the [GNU LICENSE](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text) file for details.
+This project is licensed under the GNU License - see the [GNU LICENSE](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text) file for details.
 
 ## Contact
 
